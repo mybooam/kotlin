@@ -222,7 +222,7 @@ object ExpectedActualDeclarationChecker : DeclarationChecker {
             else -> true
         }
 
-    private fun findExpectedForActual(
+    fun findExpectedForActual(
         actual: MemberDescriptor,
         commonModule: ModuleDescriptor
     ): Map<Compatibility, List<MemberDescriptor>>? {
@@ -274,9 +274,6 @@ object ExpectedActualDeclarationChecker : DeclarationChecker {
                 ?: actualsGroupedByCompatibility?.values?.flatten()
                 ?: emptyList()
     }
-
-    fun MemberDescriptor.findCompatibleExpectedForActual(commonModule: ModuleDescriptor): List<MemberDescriptor> =
-        findExpectedForActual(this, commonModule)?.get(Compatible).orEmpty()
 
     private fun CallableMemberDescriptor.findNamesakesFromModule(module: ModuleDescriptor): Collection<CallableMemberDescriptor> {
         val containingDeclaration = containingDeclaration
