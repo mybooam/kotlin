@@ -317,7 +317,7 @@ public class KotlinRunConfiguration extends JetRunConfiguration {
     @Nullable
     private static KtNamedFunction findMainFun(@NotNull PsiClass psiClass) {
         for (KtNamedFunction function : getMainFunCandidates(psiClass)) {
-            BindingContext bindingContext = ResolutionUtils.analyze(function, BodyResolveMode.FULL);
+            BindingContext bindingContext = ResolutionUtils.analyzeFully(function);
             MainFunctionDetector mainFunctionDetector = new MainFunctionDetector(bindingContext);
             if (mainFunctionDetector.isMain(function)) return function;
         }
