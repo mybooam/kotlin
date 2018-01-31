@@ -16,3 +16,6 @@ fun foo(): Int = 5
 @IntRange(0, 100)
 @SuppressLint("Lorem", "Ipsum", "Dolor")
 fun bar() = Unit
+
+@RequiresPermission(anyOf = [1, 2, 3])
+fun fooWithArrLiteral(): Int = 5
