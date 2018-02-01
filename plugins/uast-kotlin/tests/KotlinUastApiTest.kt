@@ -1,5 +1,6 @@
 package org.jetbrains.uast.test.kotlin
 
+import com.intellij.psi.PsiAnnotation
 import com.intellij.psi.PsiModifier
 import com.intellij.testFramework.UsefulTestCase
 import org.jetbrains.kotlin.asJava.toLightAnnotation
@@ -270,6 +271,9 @@ class KotlinUastApiTest : AbstractKotlinUastTest() {
                         ?: throw AssertionError("haven't got annotation from $referenceExpression(${referenceExpression?.javaClass})")
 
                 assertEquals("Annotation", convertedUAnnotation.qualifiedName)
+                val lightAnnotation = convertedUAnnotation.getAsJavaPsiElement(PsiAnnotation::class.java)
+                        ?: throw AssertionError("can't get lightAnnotation from $convertedUAnnotation")
+                assertEquals("Annotation", lightAnnotation.qualifiedName)
             }
     }
 
