@@ -100,12 +100,11 @@ abstract class AbstractKotlinUVariable(givenParent: UElement?) : KotlinAbstractU
             val sourcePsi = sourcePsi
             val identifierSourcePsi = when (sourcePsi) {
                 is KtNamedDeclaration -> sourcePsi.nameIdentifier
-                is KtObjectDeclaration -> sourcePsi.getObjectKeyword()
                 is KtTypeReference -> sourcePsi.typeElement?.let {
+                    // receiver param in extension function
                     (it as? KtUserType)?.referenceExpression?.getIdentifier() ?: it
                 } ?: sourcePsi
-                is KtUserType -> sourcePsi.referenceExpression?.getIdentifier() ?: sourcePsi
-                is KtBinaryExpression, is KtCallExpression -> null
+                is KtBinaryExpression, is KtCallExpression -> null // e.g. `foo("Lorem ipsum") ?: foo("dolor sit amet")`
                 is KtDestructuringDeclaration -> sourcePsi.valOrVarKeyword
                 else -> sourcePsi
             } ?: return null

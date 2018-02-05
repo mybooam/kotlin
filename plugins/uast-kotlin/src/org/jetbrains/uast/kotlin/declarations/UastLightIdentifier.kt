@@ -42,9 +42,15 @@ class KotlinUIdentifier private constructor(
 ) : UIdentifier(psi, givenParent) {
 
     init {
-        if (ApplicationManager.getApplication().isUnitTestMode &&
-            !(sourcePsi == null || sourcePsi is LeafPsiElement || (sourcePsi is KtElement && sourcePsi.firstChild == null)))
-            throw AssertionError("sourcePsi should be physical leaf element but got $sourcePsi of (${sourcePsi.javaClass})")
+        if (ApplicationManager.getApplication().isUnitTestMode && !acceptableSourcePsi(sourcePsi))
+            throw AssertionError("sourcePsi should be physical leaf element but got $sourcePsi of (${sourcePsi?.javaClass})")
+    }
+
+    private fun acceptableSourcePsi(sourcePsi: PsiElement?): Boolean {
+        if (sourcePsi == null) return true
+        if (sourcePsi is LeafPsiElement) return true
+        if (sourcePsi is KtElement && sourcePsi.firstChild == null) return true
+        return false
     }
 
     override val uastParent: UElement? by lazy {
